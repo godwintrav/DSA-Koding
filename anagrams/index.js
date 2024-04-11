@@ -8,7 +8,87 @@
 //   anagrams('Heart!', 'EARTH') --> True
 //   anagrams('lol', 'lolc') --> False
 
-function anagrams(stringA, stringB) {}
+function anagrams(stringA, stringB) {
+  const replacedStringA = stringA.replace(/[^a-zA-Z]/g, '').toLowerCase();
+  const replacedStringB = stringB.replace(/[^a-zA-Z]/g, '').toLowerCase();
+  if(replacedStringA.length !== replacedStringB.length){
+    return false;
+  }
+
+  let replacedStringACharCount = getCharCount(replacedStringA);
+  let replacedStringBCharCount = getCharCount(replacedStringB);
+
+  // for(let i =0; i < replacedStringA.length; i++){
+  //   charCount[replacedStringA[i]] ? charCount[replacedStringA[i]]++ : charCount[replacedStringA[i]] = 1;
+  // }
+
+  // for(let i =0; i < replacedStringB.length; i++){
+  //   if(!charCount[replacedStringB[i]]){
+  //     return false;
+  //   }
+
+  //   charCount[replacedStringB[i]]--;
+  // }
+
+  return objectsAreEqual(replacedStringACharCount, replacedStringBCharCount);
+
+}
+
+function anagrams2(stringA, stringB) {
+  const replacedStringA = stringA.replace(/[^a-zA-Z]/g, '').toLowerCase();
+  const replacedStringB = stringB.replace(/[^a-zA-Z]/g, '').toLowerCase();
+  if(replacedStringA.length !== replacedStringB.length){
+    return false;
+  }
+
+  let charCount = {};
+
+  for(let i =0; i < replacedStringA.length; i++){
+    charCount[replacedStringA[i]] ? charCount[replacedStringA[i]]++ : charCount[replacedStringA[i]] = 1;
+  }
+
+  for(let i =0; i < replacedStringB.length; i++){
+    if(!charCount[replacedStringB[i]]){
+      return false;
+    }
+
+    charCount[replacedStringB[i]]--;
+  }
+
+  return true;
+
+}
+
+function getCharCount(string){
+  let charCount = {};
+
+  for(let i = 0; i < string.length; i++){
+      charCount[string[i]] ? charCount[string[i]]++ : charCount[string[i]] = 1;
+  }
+
+  return charCount;
+}
+
+function objectsAreEqual(obj1, obj2) {
+  // Get the keys of the objects
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  // Check if the number of keys is the same
+  if (keys1.length !== keys2.length) {
+      return false;
+  }
+
+  // Check if all keys and their corresponding values are equal
+  for (let key of keys1) {
+      if (obj1[key] !== obj2[key]) {
+          return false;
+      }
+  }
+
+  // If all properties and values are equal, return true
+  return true;
+}
 
 // _________ _______  _______ _________   _______  _______  _______  _______  _______
 // \__   __/(  ____ \(  ____ \\__   __/  (  ____ \(  ___  )(  ____ \(  ____ \(  ____ \
@@ -38,6 +118,7 @@ const { assert } = chai;
 
 describe("Anagrams", () => {
   it("works if case sensitivity and non word characters NOT taken into account", () => {
+    console.log(anagrams("earth", "heart"))
     assert.equal(anagrams("earth", "heart"), true);
 
     assert.equal(anagrams("love", "meow"), false);
